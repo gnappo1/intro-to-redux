@@ -6,10 +6,17 @@ const TodosList = (props) => {
     const renderTodos = () => {
         return props.todos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
     }
+
+    const renderCompletedTodos = () => {
+
+    }
+
     return (
         <>
-            <h1>Todos</h1>
+            <h1>Pending Todos</h1>
             {renderTodos()}
+            <h3>Completed Todos</h3>
+            {renderCompletedTodos()}
         </>
     )
 }

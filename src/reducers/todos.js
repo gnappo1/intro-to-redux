@@ -6,21 +6,26 @@ const defaultState = [
     {title: "Clean Curtains", body: "Finish cleaning curtains by 7pm ET", id: 3, completed: false}
 ]
 
+const arrayEquals = (a, b) => {
+  return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => b.includes(val));
+}
+
+const checkTodoFormat = (payload) => {
+    const isObject = Object.prototype.toString.call(payload) === '[object Object]'
+    const areKeysRight = arrayEquals(Object.keys(payload), [ 'title', 'body', 'completed', 'id' ])
+    return isObject && areKeysRight
+}
+
 export const todosReducer = (state = defaultState, action) => {
     switch(action.type){
         case ADD_TODO:
-            return [...state, action.payload]
+            return checkTodoFormat(action.payload) ? [...state, action.payload] : state
         case REMOVE_TODO:
             const todoIndex = state.findIndex(todo => String(todo.id) === String(action.payload))
-            // debugger
-            return !!todoIndex || todoIndex === 0 ? (
-                [
-                    ...state.slice(0, todoIndex),
-                    ...state.slice(todoIndex + 1)
-                ]
-            ) : (
-                state
-            )
+            return !!todoIndex || todoIndex === 0 ? [...state.slice(0, todoIndex), ...state.slice(todoIndex + 1)] : state
         default:
             return state
     }
