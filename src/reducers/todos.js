@@ -6,8 +6,6 @@ const defaultState = [
 ]
 export const todosReducer = (state = [], action) => {
     switch(action.type){
-        case "@@INIT":
-            return defaultState
         case ADD_TODO:
             return [] //fix code here
         case REMOVE_TODO:
