@@ -1,7 +1,9 @@
 const ADD_TODO = "ADD_TODO"
 const REMOVE_TODO = "REMOVE_TODO"
+const MARK_COMPLETE = "MARK_COMPLETE"
 
 export {
     ADD_TODO,
-    REMOVE_TODO
+    REMOVE_TODO,
+    MARK_COMPLETE
 }
