@@ -28,6 +28,14 @@ const Navbar = (props) => {
                 background: 'darkblue'
             }}
             >Todos</NavLink>
+            <NavLink
+            to="/todos/new"
+            exact
+            style={link}
+            activeStyle={{
+                background: 'darkblue'
+            }}
+            >New Todo</NavLink>
         </div>
     )
 }
