@@ -8,7 +8,7 @@ export function addTodo(todo){
 }
 
 export function removeTodo(todoId){
-    return{
+    return {
         type: REMOVE_TODO,
         payload: todoId
     }

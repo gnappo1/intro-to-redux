@@ -4,7 +4,7 @@ import TodoItem from "./TodoItem"
 const TodosList = (props) => {
     
     const renderTodos = () => {
-        return props.todos.map(todo => <TodoItem {...todo} key={todo.id} />)
+        return props.todos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
     }
     return (
         <>

@@ -15,6 +15,17 @@ class TodoForm extends PureComponent {
         this.setState({[e.target.name]: e.target.value})
     }
 
+    pick = (...selectedArgs) => obj =>  selectedArgs.reduce((acc, attr) => ({...acc, [attr]: obj[attr]}), {})
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        const id = uuidv4()
+        const slicedState = this.pick("title", "body", "completed")(this.state)
+        // debugger
+        this.props.addTodo({...slicedState, id})
+        this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
+    }
+
     render() {
         if (!!this.state.isFormSubmitted) {
             return <Redirect push to="/todos"/>
@@ -26,7 +37,7 @@ class TodoForm extends PureComponent {
                     <div className="col-md-8 col-md-offset-2">
                         <div className="panel panel-default">
                             <div className="panel-body">
-                                <form className="form-horizontal">
+                                <form className="form-horizontal" onSubmit={this.handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="title" className="col-md-4 control-label">Title</label>
                                         <div className="col-md-5">
