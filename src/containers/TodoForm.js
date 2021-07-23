@@ -22,7 +22,7 @@ class TodoForm extends PureComponent {
         const id = uuidv4()
         const slicedState = this.pick("title", "body", "completed")(this.state)
         // debugger
-        this.props.addTodo({...slicedState, id})
+        this.props.addTodo({...slicedState, id, completionTime: null})
         this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
     }
 

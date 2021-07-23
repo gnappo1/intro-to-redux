@@ -3,18 +3,20 @@ import TodoItem from "./TodoItem"
 
 const TodosList = (props) => {
     
-    const renderTodos = () => {
-        return props.todos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
+    const renderMissingTodos = () => {
+        const missingTodos = props.todos.filter(todo => !todo.completed)
+        return missingTodos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
     }
 
     const renderCompletedTodos = () => {
-
+        const completedTodos = props.todos.filter(todo => todo.completed)
+        return completedTodos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
     }
 
     return (
         <>
             <h1>Pending Todos</h1>
-            {renderTodos()}
+            {renderMissingTodos()}
             <h3>Completed Todos</h3>
             {renderCompletedTodos()}
         </>

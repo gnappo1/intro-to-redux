@@ -8,7 +8,7 @@ import Home from "../components/Home"
 import ErrorPage from "../components/ErrorPage"
 import TodoForm from "./TodoForm"
 import {connect} from "react-redux"
-import {addTodo, removeTodo} from "../actions/index"
+import {addTodo, removeTodo, markComplete} from "../actions/index"
 
 class App extends Component {
 
@@ -24,7 +24,7 @@ class App extends Component {
             <Route path="/todos/:todoId" render={routeProps => {
               const todo = this.props.todos.find(todo => String(todo.id) === routeProps.match.params.todoId)
               return (!!todo) ? (
-                 <TodoItem {...routeProps} {...todo} removeTodo={this.props.removeTodo} />
+                 <TodoItem {...routeProps} {...todo} markComplete={this.props.markComplete} removeTodo={this.props.removeTodo} />
               ) : (
                 <ErrorPage />
               )
@@ -55,4 +55,4 @@ const mapStateToProps = (currentState) => {
 
 // }
 
-export default connect(mapStateToProps, {addTodo, removeTodo})(App);
+export default connect(mapStateToProps, {addTodo, removeTodo, markComplete})(App);

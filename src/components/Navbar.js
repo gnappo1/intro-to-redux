@@ -12,7 +12,7 @@ const link = {
 
 const Navbar = (props) => {
     return (
-        <div  class="mb-3">
+        <div  className="mb-3">
             <NavLink
             to="/"
             exact

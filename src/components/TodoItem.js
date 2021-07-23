@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom';
-const TodoItem = ({id, title, body, completed, history, removeTodo}) => {
+const TodoItem = ({id, title, body, completed, history, removeTodo, markComplete}) => {
 
     const handleClick = () => {
         removeTodo(id)
+        history.push("/todos")
+    }
+
+    const handleCompleteChange = () => {
+        const currentDate = new Date().toISOString().split("T")[0]
+        markComplete(id, currentDate)
         history.push("/todos")
     }
 
@@ -11,7 +17,7 @@ const TodoItem = ({id, title, body, completed, history, removeTodo}) => {
     const conditionalCheckBox = () => {
         if (history.location.pathname === `/todos/${id}`) {
             if (!completed) {
-                return <span>Mark complete <input type="checkbox" /></span>
+                return <span>Mark complete <input type="checkbox" onClick={handleCompleteChange}/></span>
             } else {
                 return <h4>Todo item complited on date: {}</h4>
             }
