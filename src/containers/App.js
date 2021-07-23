@@ -29,7 +29,7 @@ class App extends Component {
                 <ErrorPage />
               )
             }}/>
-            {}
+            <Route component={ErrorPage} />
           </Switch>
         </Router>
       </div>

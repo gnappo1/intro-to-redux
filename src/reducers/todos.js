@@ -22,11 +22,11 @@ const checkTodoFormat = (payload) => {
 export const todosReducer = (state = defaultState, action) => {
     switch(action.type){
         case ADD_TODO:
-            debugger
             return checkTodoFormat(action.payload) ? [...state, action.payload] : state
         case REMOVE_TODO:
-            const todoIndex = state.findIndex(todo => String(todo.id) === String(action.payload))
-            return !!todoIndex || todoIndex === 0 ? [...state.slice(0, todoIndex), ...state.slice(todoIndex + 1)] : state
+            // const todoIndex = state.findIndex(todo => String(todo.id) === String(action.payload))
+            // return !!todoIndex || todoIndex === 0 ? [...state.slice(0, todoIndex), ...state.slice(todoIndex + 1)] : state
+            return state.filter(todo => todo.id !== action.payload)
         case MARK_COMPLETE:
             const index = state.findIndex(todo => String(todo.id) === String(action.payload.todoId))
             return !!index || index === 0 ? [...state.slice(0, index), {...state[index], completed: true, completionTime: action.payload.completionTime}, ...state.slice(index + 1)] : state
