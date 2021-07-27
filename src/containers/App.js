@@ -8,11 +8,24 @@ import Home from "../components/Home"
 import ErrorPage from "../components/ErrorPage"
 import TodoForm from "./TodoForm"
 import {connect} from "react-redux"
-import {addTodo, removeTodo, markComplete} from "../actions/index"
+import LoadingIndicator from '../components/LoadingIndicator';
+import {getTodos, addTodo, removeTodo, markComplete} from "../actions/index"
 
 class App extends Component {
 
+  componentDidMount() {
+    this.props.getTodos()
+  }
+
   render() {
+    if (!!this.props.loading) {
+      return <LoadingIndicator/>
+    }
+
+    if (!!this.props.error) {
+      return <ErrorPage error={this.props.error} />
+    }
+
     return (
       <div className="App">
         <Router>
@@ -39,20 +52,24 @@ class App extends Component {
 
 const mapStateToProps = (currentState) => {
   return {
-    todos: currentState.todos
+    todos: currentState.todos.todos,
+    loading: currentState.todos.loading,
+    error: currentState.todos.error
   }
 }
 
-// const mapDispatch = (dispatch) => {
-//   return {
-//     addTodo: (todo) => dispatch(addTodo(todo)),
-//     removeTodo: (todoId) => dispatch(removeTodo(todoId)),
-//   }
-// }
+const mapDispatch = (dispatch, ownProps) => {
+  return {
+    addTodo: (todo) => dispatch(addTodo(todo)),
+    removeTodo: (todoId) => dispatch(removeTodo(todoId)),
+    markComplete: (todoId, completionTime) => dispatch(markComplete(todoId, completionTime)),
+    getTodos: (todos) => dispatch(getTodos(todos))
+  }
+}
 
 // const mergeProps = (stateProp, dispatchProp, ownProp) => {
 //   return {}
 
 // }
 
-export default connect(mapStateToProps, {addTodo, removeTodo, markComplete})(App);
+export default connect(mapStateToProps, mapDispatch)(App);

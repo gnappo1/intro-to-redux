@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import {Redirect} from 'react-router-dom'
 
 class TodoForm extends PureComponent {
@@ -19,10 +19,8 @@ class TodoForm extends PureComponent {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const id = uuidv4()
         const slicedState = this.pick("title", "body", "completed")(this.state)
-        // debugger
-        this.props.addTodo({...slicedState, id, completionTime: null})
+        this.props.addTodo({...slicedState, completionTime: null})
         this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
     }
 

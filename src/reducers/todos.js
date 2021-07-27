@@ -1,10 +1,4 @@
-import {ADD_TODO, REMOVE_TODO, MARK_COMPLETE} from "../actions/actionTypes"
-
-const defaultState = [
-    {title: "Clean Dishes", body: "Finish cleaning dishes by 7pm ET", id: 1, completed: false, completionTime: null},
-    {title: "Clean Floors", body: "Finish cleaning floors by 7pm ET", id: 2, completed: false, completionTime: null},
-    {title: "Clean Curtains", body: "Finish cleaning curtains by 7pm ET", id: 3, completed: false, completionTime: null}
-]
+import {GET_TODOS, ADD_TODO, REMOVE_TODO, MARK_COMPLETE, DATABASE_SAVING, DATABASE_INSPECTING, ERROR} from "../actions/actionTypes"
 
 const arrayEquals = (a, b) => {
   return Array.isArray(a) &&
@@ -19,17 +13,38 @@ const checkTodoFormat = (payload) => {
     return isObject && areKeysRight
 }
 
-export const todosReducer = (state = defaultState, action) => {
+const pick = (...selectedArgs) => obj =>  selectedArgs.reduce((acc, attr) => ({...acc, [attr]: obj[attr]}), {})
+
+const reformatCompletionTime = (todo) => {
+    const newAction = pick("title", "body", "completed", "id")(todo)
+    return {...newAction, completionTime: todo.completion_time}
+}
+
+export const todosReducer = (state = {todos: [], loading: false, error: ""}, action) => {
     switch(action.type){
+        case DATABASE_INSPECTING:
+            return {...state, loading: action.payload}
+        case DATABASE_SAVING:
+            return {...state, loading: action.payload}
+        case GET_TODOS:
+            return {todos: action.payload, loading: false, error: ""}
+        case ERROR:
+            return {...state, error: action.payload}
         case ADD_TODO:
-            return checkTodoFormat(action.payload) ? [...state, action.payload] : state
+            const formattedTodo = reformatCompletionTime(action.payload)
+            return checkTodoFormat(formattedTodo) ? {...state, todos: [...state.todos, formattedTodo], loading: false, error: ""} : state
         case REMOVE_TODO:
-            // const todoIndex = state.findIndex(todo => String(todo.id) === String(action.payload))
-            // return !!todoIndex || todoIndex === 0 ? [...state.slice(0, todoIndex), ...state.slice(todoIndex + 1)] : state
-            return state.filter(todo => todo.id !== action.payload)
+            const newTodos = state.todos.filter(todo => todo.id !== action.payload)
+            return {todos: newTodos, loading: false, error: ""}
         case MARK_COMPLETE:
-            const index = state.findIndex(todo => String(todo.id) === String(action.payload.todoId))
-            return !!index || index === 0 ? [...state.slice(0, index), {...state[index], completed: true, completionTime: action.payload.completionTime}, ...state.slice(index + 1)] : state
+            const index = state.todos.findIndex(todo => String(todo.id) === String(action.payload.id))
+            return !!index || index === 0 ? (
+                {...state, todos: [
+                    ...state.todos.slice(0, index), 
+                    action.payload,
+                    ...state.todos.slice(index + 1)
+                ], error: "", loading: false} 
+            ): state
         default:
             return state
     }
