@@ -1,15 +1,13 @@
-import { Link, Redirect } from 'react-router-dom';
-import {useMemo} from 'react';
-
-const TodoItem = ({id, title, body, completed, completionTime, history, removeTodo, markComplete}) => {
+import { Link } from 'react-router-dom';
+const TodoItem = ({id, title, body, completed, history, removeTodo, completion_time, markComplete}) => {
 
     const handleClick = () => {
         removeTodo(id)
         history.push("/todos")
     }
 
-    const handleCheck = () => {
-        const currentDate = new Date().toISOString().split('T')[0]
+    const handleCompleteChange = () => {
+        const currentDate = new Date().toISOString().split("T")[0]
         markComplete(id, currentDate)
         history.push("/todos")
     }
@@ -19,9 +17,9 @@ const TodoItem = ({id, title, body, completed, completionTime, history, removeTo
     const conditionalCheckBox = () => {
         if (history.location.pathname === `/todos/${id}`) {
             if (!completed) {
-                return <span>Mark complete <input type="checkbox" onClick={() => handleCheck()} /></span>
+                return <span>Mark complete <input type="checkbox" onClick={handleCompleteChange}/></span>
             } else {
-                return <h4>Todo item complited on date: {completionTime}</h4>
+                return <h4>Todo item completed on date: {completion_time}</h4>
             }
         }
     }

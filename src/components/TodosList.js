@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types'
 import TodoItem from "./TodoItem"
 
-const TodosList = (props) => {
+const TodosList = ({todos, history}) => {
 
-    const renderOpenTodos = () => {
-        const openTodos = props.todos.filter(todo => !todo.completed)
-        return openTodos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
+    const renderMissingTodos = () => {
+        const missingTodos = todos.filter(todo => !todo.completed)
+        return missingTodos.map(todo => <TodoItem {...todo} history={history} key={todo.id} />)
     }
-    
+
     const renderCompletedTodos = () => {
-        const filteredTodos = props.todos.filter(todo => !!todo.completed)
-        return filteredTodos.map(todo => <TodoItem {...todo} history={props.history} key={todo.id} />)
+        const completedTodos = todos.filter(todo => todo.completed)
+        return completedTodos.map(todo => <TodoItem {...todo} history={history} key={todo.id} />)
     }
 
     return (
         <>
             <h1>Pending Todos</h1>
-            {renderOpenTodos()}
+            {renderMissingTodos()}
             <h3>Completed Todos</h3>
             {renderCompletedTodos()}
         </>
