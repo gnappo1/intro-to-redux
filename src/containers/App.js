@@ -8,9 +8,13 @@ import Home from "../components/Home"
 import ErrorPage from "../components/ErrorPage"
 import TodoForm from "./TodoForm"
 import {connect} from "react-redux"
-import {addTodo, removeTodo, markComplete} from "../actions/index"
+import {addTodo, removeTodo, markComplete, fetchTodos} from "../actions/index"
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.fetchTodos()
+  }
 
   render() {
     return (
@@ -39,7 +43,7 @@ class App extends Component {
 
 const mapStateToProps = (currentState) => {
   return {
-    todos: currentState.todos
+    todos: currentState.todos.todos
   }
 }
 
@@ -47,6 +51,7 @@ const mapStateToProps = (currentState) => {
 //   return {
 //     addTodo: (todo) => dispatch(addTodo(todo)),
 //     removeTodo: (todoId) => dispatch(removeTodo(todoId)),
+//      fetchTodos: (todos) => dispatch(fetchTodos(todos))
 //   }
 // }
 
@@ -55,4 +60,4 @@ const mapStateToProps = (currentState) => {
 
 // }
 
-export default connect(mapStateToProps, {addTodo, removeTodo, markComplete})(App);
+export default connect(mapStateToProps, {addTodo, removeTodo, markComplete, fetchTodos})(App);

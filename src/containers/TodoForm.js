@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { v4 as uuidv4 } from 'uuid';
 import {Redirect} from 'react-router-dom'
 
 class TodoForm extends PureComponent {
@@ -17,12 +16,24 @@ class TodoForm extends PureComponent {
 
     pick = (...selectedArgs) => obj =>  selectedArgs.reduce((acc, attr) => ({...acc, [attr]: obj[attr]}), {})
 
+    fetchNewTodo = (todo) => {
+        const configObj = {
+            method: "POST",
+            headers: {
+                accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(todo)
+        }
+        fetch("http://localhost:3000/todos", configObj)
+        .then(resp => resp.json())
+        .then(json => this.props.addTodo(json))
+    }
+
     handleSubmit = (e) => {
         e.preventDefault()
-        const id = uuidv4()
         const slicedState = this.pick("title", "body", "completed")(this.state)
-        // debugger
-        this.props.addTodo({...slicedState, id, completionTime: null})
+        this.fetchNewTodo(slicedState)
         this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
     }
 
