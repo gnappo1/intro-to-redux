@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-const TodoItem = ({id, title, body, completed, history, removeTodo, markComplete}) => {
+const TodoItem = ({id, title, body, completed, history, removeTodo, completion_time, markComplete}) => {
 
     const handleClick = () => {
         removeTodo(id)
@@ -19,7 +19,7 @@ const TodoItem = ({id, title, body, completed, history, removeTodo, markComplete
             if (!completed) {
                 return <span>Mark complete <input type="checkbox" onClick={handleCompleteChange}/></span>
             } else {
-                return <h4>Todo item complited on date: {}</h4>
+                return <h4>Todo item completed on date: {completion_time}</h4>
             }
         }
     }
