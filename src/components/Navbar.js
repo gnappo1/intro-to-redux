@@ -1,4 +1,8 @@
+import React from "react";
+import { checkAuth } from "../actions/index";
 import { NavLink } from 'react-router-dom';
+import {connect} from "react-redux"
+import Logout from "./Logout";
 
 const link = {
   width: '100px',
@@ -10,17 +14,25 @@ const link = {
   color: 'white',
 }
 
-const Navbar = (props) => {
-    return (
-        <div  className="mb-3">
-            <NavLink
-            to="/"
+
+class Navbar extends React.Component {
+  componentDidMount() {
+    this.props.dispatchCheckAuth();
+  }
+
+  renderAuthLinks() {
+    const { authChecked, loggedIn, currentUser } = this.props;
+    if (authChecked) {
+      return loggedIn ? (
+        <>
+          <NavLink
+            to='/protected'
             exact
             style={link}
             activeStyle={{
                 background: 'darkblue'
             }}
-            >Home</NavLink>
+            >Protected</NavLink>
             <NavLink
             to="/todos"
             exact
@@ -37,8 +49,59 @@ const Navbar = (props) => {
                 background: 'darkblue'
             }}
             >New Todo</NavLink>
-        </div>
-    )
+            <Logout />
+        </>
+      ) : (
+        <>
+            <NavLink
+                to="/"
+                exact
+                style={link}
+                activeStyle={{
+                    background: 'darkblue'
+                }}
+            >Home</NavLink>
+            <NavLink
+                to="/login"
+                exact
+                style={link}
+                activeStyle={{
+                    background: 'darkblue'
+                }}
+            >Login</NavLink>
+            <NavLink
+                to="/signup"
+                exact
+                style={link}
+                activeStyle={{
+                    background: 'darkblue'
+                }}
+            >Signup</NavLink>
+        </>
+      );
+    } else {
+      return null
+    }
+  }
+  
+  
+    render() {
+        return (
+            <div  className="mb-3">
+                {this.renderAuthLinks()}
+            </div>
+        )
+    }
 }
 
-export default Navbar;
+const mapStateToProps = ({ auth: { authChecked, loggedIn, currentUser } }) => {
+    return { authChecked, loggedIn, currentUser };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      dispatchCheckAuth: () => dispatch(checkAuth())
+    };
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

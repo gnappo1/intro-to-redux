@@ -1,6 +1,7 @@
 import {ADD_TODO, REMOVE_TODO, MARK_COMPLETE, FETCH_TODOS, DATABASE_INSPECTING, LOADING_DATA, DATABASE_SAVING, ERROR} from "./actionTypes"
 
 export function addTodo(todo){
+    
     return (dispatch) => {
         const configObj = {
             method: "POST",
@@ -13,20 +14,50 @@ export function addTodo(todo){
 
         dispatch({type: DATABASE_SAVING, payload: true})
         fetch("http://localhost:3000/todos", configObj)
-        .then(resp => resp.json())
-        .then(json => dispatch({type: ADD_TODO, payload: json}))
-        .catch(err => dispatch({type: ERROR, payload: err}))
+        .then(resp => {
+            if (resp.ok) {
+                return resp
+                        .json()
+                        .then(json => dispatch({type: ADD_TODO, payload: json}))
+            } else {
+                return resp
+                        .json()
+                        .then((errors) => {
+                            dispatch({type: ERROR, payload: errors})
+                            return Promise.reject(errors);
+                        });
+            }
+        })
+        .catch(err => dispatch({type: ERROR, payload: err}))  
         
     }
 }
 
-export function fetchTodos(todos){
-    return (dispatch, getState) => {
+export function fetchTodos() {
+    return (dispatch) => {
         dispatch({type: LOADING_DATA})
-        fetch("http://localhost:3000/todos")
-        .then(resp => resp.json())
-        .then(json => dispatch({type: FETCH_TODOS, payload: json}))
-        .catch(err => dispatch({type: ERROR, payload: err}))
+        fetch("http://localhost:3000/todos", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+        })
+        .then(resp => {
+            if (resp.ok) {
+                return resp
+                        .json()
+                        .then(json => dispatch({type: FETCH_TODOS, payload: json}))
+            } else {
+                return resp
+                        .json()
+                        .then((errors) => {
+                            dispatch({type: ERROR, payload: errors})
+                            return Promise.reject(errors);
+                        });
+            }
+        })
+        .catch(err => dispatch({type: ERROR, payload: err}))  
+        
     }
 }
 
@@ -41,8 +72,20 @@ export function removeTodo(todoId){
         }
         dispatch({type: DATABASE_INSPECTING, payload: true})
         fetch(`http://localhost:3000/todos/${todoId}`, configObj)
-        .then(resp => resp.json())
-        .then(successMessage => dispatch({type: REMOVE_TODO, payload: todoId}))
+        .then(resp => {
+            if (resp.ok) {
+                return resp
+                        .json()
+                        .then(json => dispatch({type: REMOVE_TODO, payload: todoId}))
+            } else {
+                return resp
+                        .json()
+                        .then((errors) => {
+                            dispatch({type: ERROR, payload: errors})
+                            return Promise.reject(errors);
+                        });
+            }
+        })
         .catch(err => dispatch({type: ERROR, payload: err}))
     }
 }
@@ -67,8 +110,20 @@ export function markComplete(todoId, completionTime){
         }
         dispatch({type: DATABASE_INSPECTING, payload: true})
         fetch(`http://localhost:3000/todos/${todoId}`, configObj)
-        .then(resp => resp.json())
-        .then(json => dispatch({type: MARK_COMPLETE, payload: json}))
+        .then(resp => {
+            if (resp.ok) {
+                return resp
+                        .json()
+                        .then(json => dispatch({type: MARK_COMPLETE, payload: json}))
+            } else {
+                return resp
+                        .json()
+                        .then((errors) => {
+                            dispatch({type: ERROR, payload: errors})
+                            return Promise.reject(errors);
+                        });
+            }
+        })
         .catch(err => dispatch({type: ERROR, payload: err}))
     }
 }

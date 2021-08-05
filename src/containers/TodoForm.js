@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
+import {connect} from "react-redux"
+import {addTodo} from "../actions/index"
 
 class TodoForm extends PureComponent {
+    
     state = {
         title: "",
         body: "",
@@ -16,25 +19,11 @@ class TodoForm extends PureComponent {
 
     pick = (...selectedArgs) => obj =>  selectedArgs.reduce((acc, attr) => ({...acc, [attr]: obj[attr]}), {})
 
-    fetchNewTodo = (todo) => {
-        const configObj = {
-            method: "POST",
-            headers: {
-                accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(todo)
-        }
-        fetch("http://localhost:3000/todos", configObj)
-        .then(resp => resp.json())
-        .then(json => this.props.addTodo(json))
-    }
-
     handleSubmit = (e) => {
         e.preventDefault()
         const slicedState = this.pick("title", "body", "completed")(this.state)
 
-        this.props.addTodo({...slicedState, completionTime: null})
+        this.props.addTodo({...slicedState, completionTime: null, user_id: this.props.userId})
         
         this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
     }
@@ -90,4 +79,8 @@ class TodoForm extends PureComponent {
     }
 }
 
-export default TodoForm;
+const mapState = ({auth: currentUser}) => {
+    return {userId: currentUser.currentUser.id}
+}
+
+export default connect(mapState, {addTodo})(TodoForm);

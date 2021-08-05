@@ -9,6 +9,10 @@ import ErrorPage from "../components/ErrorPage"
 import TodoForm from "./TodoForm"
 import {connect} from "react-redux"
 import LoadingIndicator from '../components/LoadingIndicator';
+import Protected from "../components/Protected";
+import Signup from "../components/Signup";
+import Login from "../components/Login";
+import withAuth from "../components/WithAuth";
 import {fetchTodos, addTodo, removeTodo, markComplete} from "../actions/index"
 
 class App extends Component {
@@ -31,9 +35,12 @@ class App extends Component {
         <Router>
           <Navbar />
           <Switch>
-            <Route exact path="/" component={Home} /> 
-            <Route exact path="/todos" render={routeProps => <TodosList todos={this.props.todos} {...routeProps}/>}/>  
-            <Route exact path="/todos/new" render={routeProps => <TodoForm {...routeProps} addTodo={this.props.addTodo} />}/>
+            <Route exact path="/" component={Home} />
+            <Route exact path='/signup' component={Signup} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path="/protected" component={withAuth(Protected)} />
+            <Route exact path="/todos" component={withAuth(TodosList)}/>  
+            <Route exact path="/todos/new" component={withAuth(TodoForm)} />
             <Route path="/todos/:todoId" render={routeProps => {
               const todo = this.props.todos.find(todo => String(todo.id) === routeProps.match.params.todoId)
               return (!!todo) ? (
