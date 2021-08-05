@@ -33,7 +33,9 @@ class TodoForm extends PureComponent {
     handleSubmit = (e) => {
         e.preventDefault()
         const slicedState = this.pick("title", "body", "completed")(this.state)
+
         this.props.addTodo({...slicedState, completionTime: null})
+        
         this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
     }
 

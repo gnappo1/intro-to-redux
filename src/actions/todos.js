@@ -10,11 +10,13 @@ export function addTodo(todo){
             },
             body: JSON.stringify(todo)
         }
+
         dispatch({type: DATABASE_SAVING, payload: true})
         fetch("http://localhost:3000/todos", configObj)
         .then(resp => resp.json())
         .then(json => dispatch({type: ADD_TODO, payload: json}))
         .catch(err => dispatch({type: ERROR, payload: err}))
+        
     }
 }
 

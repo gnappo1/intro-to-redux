@@ -58,7 +58,7 @@ const mapStateToProps = (currentState) => {
   }
 }
 
-const mapDispatch = (dispatch, ownProps) => {
+const mapDispatch = (dispatch) => {
   return {
     addTodo: (todo) => dispatch(addTodo(todo)),
     removeTodo: (todoId) => dispatch(removeTodo(todoId)),
