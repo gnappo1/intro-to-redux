@@ -8,9 +8,9 @@ const setToken = (token) => {
   
 const getToken = () => {
     const now = new Date(Date.now()).getTime();
-    const thirtyMinutes = 1000 * 60 * 30;
+    const timeAllowed = 1000 * 60 * 30;
     const timeSinceLastLogin = now - localStorage.getItem("lastLoginTime");
-    if (timeSinceLastLogin < thirtyMinutes) {
+    if (timeSinceLastLogin < timeAllowed) {
         return localStorage.getItem("token");
     }
 };
@@ -101,7 +101,9 @@ export const checkAuth = () => {
         }
       }).then((res) => {
         if (res.ok) {
-          return res.json().then(user => dispatch({type: AUTHENTICATED, payload: user}))
+          return res
+                  .json()
+                  .then(user => dispatch({type: AUTHENTICATED, payload: user}))
         } else {
           return Promise.reject(dispatch({type: NOT_AUTHENTICATED}))
         }

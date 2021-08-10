@@ -10,13 +10,13 @@ const arrayEquals = (a, b) => {
 const pick = (...selectedArgs) => obj =>  selectedArgs.reduce((acc, attr) => ({...acc, [attr]: obj[attr]}), {})
 
 const reformatCompletionTime = (todo) => {
-    const newAction = pick("title", "body", "completed", "id")(todo)
+    const newAction = pick("title", "body", "completed", "id", "attachment_format", "avatar_format")(todo)
     return {...newAction, completionTime: todo.completion_time}
 }
 
 const checkTodoFormat = (payload) => {
     const isObject = Object.prototype.toString.call(payload) === '[object Object]'
-    const areKeysRight = arrayEquals(Object.keys(payload), ["title", "body", "completed", "id", "completionTime"])
+    const areKeysRight = arrayEquals(Object.keys(payload), ["title", "body", "completed", "id", "completionTime", "attachment_format", "avatar_format"])
     return isObject && areKeysRight
 }
 

@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/auth";
 import { useHistory } from "react-router-dom";
 
-const Logout = ({ dispatchLogoutUser }) => {
+const Logout = ({ logoutUser }) => {
   const history = useHistory();
   
   const handleClick = () => {
-    dispatchLogoutUser().then(() => history.push("/"));
+    logoutUser().then(() => history.push("/"));
   };
 
   const link = {
@@ -27,7 +27,7 @@ const Logout = ({ dispatchLogoutUser }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchLogoutUser: () => dispatch(logoutUser())
+    logoutUser: () => dispatch(logoutUser())
   };
 };
 

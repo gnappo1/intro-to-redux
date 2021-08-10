@@ -5,7 +5,9 @@ import {connect} from "react-redux"
 import {addTodo} from "../actions/index"
 
 class TodoForm extends PureComponent {
-    
+    fileAvatar = React.createRef();
+    fileAttachment = React.createRef();
+
     state = {
         title: "",
         body: "",
@@ -21,11 +23,12 @@ class TodoForm extends PureComponent {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const slicedState = this.pick("title", "body", "completed")(this.state)
-
-        this.props.addTodo({...slicedState, completionTime: null, user_id: this.props.userId})
+        // const slicedState = this.pick("title", "body", "completed")(this.state)
+        const formData = new FormData(e.target)
+        this.props.addTodo(formData)
         
         this.setState({title: "", body: "", isFormSubmitted: true, completed: false})
+        // debugger
     }
 
     render() {
@@ -42,7 +45,7 @@ class TodoForm extends PureComponent {
                                 <form className="form-horizontal" onSubmit={this.handleSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="title" className="col-md-4 control-label">Title</label>
-                                        <div className="col-md-5">
+                                        <div className="col-md-12">
                                         <input
                                             className="form-control"
                                             type="text"
@@ -55,12 +58,34 @@ class TodoForm extends PureComponent {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="body" className="col-md-4 control-label">Todo</label>
-                                        <div className="col-md-5">
+                                        <div className="col-md-12">
                                             <textarea
                                                 className="form-control"
                                                 name="body"
                                                 value={this.state.body}
                                                 onChange={this.handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="body" className="col-md-4 control-label">Todo Avatar</label>
+                                        <div className="col-md-12">
+                                            <input
+                                                className="form-control"
+                                                name="avatar"
+                                                type="file"
+                                                ref={this.fileAvatar}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="body" className="col-md-4 control-label">Todo PDF Attachment</label>
+                                        <div className="col-md-12">
+                                            <input
+                                                className="form-control"
+                                                name="attachment"
+                                                type="file"
+                                                ref={this.fileAttachment}
                                             />
                                         </div>
                                     </div>

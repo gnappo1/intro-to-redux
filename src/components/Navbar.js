@@ -17,7 +17,7 @@ const link = {
 
 class Navbar extends React.Component {
   componentDidMount() {
-    this.props.dispatchCheckAuth();
+    this.props.checkAuth();
   }
 
   renderAuthLinks() {
@@ -100,7 +100,7 @@ const mapStateToProps = ({ auth: { authChecked, loggedIn, currentUser } }) => {
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      dispatchCheckAuth: () => dispatch(checkAuth())
+      checkAuth: () => dispatch(checkAuth())
     };
   };
   

@@ -1,15 +1,23 @@
 import {ADD_TODO, REMOVE_TODO, MARK_COMPLETE, FETCH_TODOS, DATABASE_INSPECTING, LOADING_DATA, DATABASE_SAVING, ERROR} from "./actionTypes"
 
+const getToken = () => {
+    const now = new Date(Date.now()).getTime();
+    const timeAllowed = 1000 * 60 * 30;
+    const timeSinceLastLogin = now - localStorage.getItem("lastLoginTime");
+    if (timeSinceLastLogin < timeAllowed) {
+        return localStorage.getItem("token");
+    }
+};
+
 export function addTodo(todo){
-    
     return (dispatch) => {
         const configObj = {
             method: "POST",
             headers: {
                 accept: "application/json",
-                "Content-Type": "application/json"
+                Authorization: getToken()
             },
-            body: JSON.stringify(todo)
+            body: todo
         }
 
         dispatch({type: DATABASE_SAVING, payload: true})

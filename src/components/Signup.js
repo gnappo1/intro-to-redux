@@ -19,7 +19,7 @@ class Signup extends React.Component {
     event.preventDefault();
     const { email, password } = this.state;
     this.props
-      .dispatchSignupUser({ email, password })
+      .signupUser({ email, password })
       .then(() => this.props.history.push("/"))
       .catch((errors) => this.setState({ errors }));
   };
@@ -70,7 +70,7 @@ class Signup extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchSignupUser: (credentials) => dispatch(signupUser(credentials))
+    signupUser: (credentials) => dispatch(signupUser(credentials))
   };
 };
 
